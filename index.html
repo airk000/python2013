@@ -1,0 +1,425 @@
+<!--
+Author: emptyhua@gmail.com
+Create: 2013-02-01
+-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>蛇年话Python</title>
+  <meta charset='utf-8'>
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.0.min.js"></script>
+  <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
+  <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/sunburst.min.css">
+  <script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script>
+  </head>
+  <script>
+  hljs.tabReplace = '    ';
+  hljs.initHighlightingOnLoad();
+  </script>
+  <script>
+function PPT(container) {
+    var self = this;
+    self.pageIdPrefix = 'p';
+    self.container = $(container);
+    self.ppts = self.container.find('.ppt');
+    self.ppts.each(function(i){
+        $(this).attr('id', self.pageIdPrefix + (i + 1))
+        .append('<div class="pager">' + (i + 1) + '</div>');
+    });
+    $(document).keyup(function(e){
+        e.stopPropagation();
+        e.preventDefault();
+        if (e.keyCode == 39 || e.keyCode == 32) {
+            self.next();
+        } else if (e.keyCode == 37){
+            self.prev();
+        } else if (e.keyCode == 77) { //m
+            if (self.mode == 'outline') {
+                self.play();
+            } else {
+                self.outline();
+            }
+        }
+    });
+
+    self.play();
+
+    $(window).on('hashchange', function() {
+        if (self.current) self.current.removeClass('current');
+        var cur = $(window.location.hash.replace('#', '#' + self.pageIdPrefix));
+        if (!cur.length) cur = $(self.ppts.get(0));
+        self.current = cur.addClass('current');
+    });
+
+    var cur = $(window.location.hash.replace('#', '#' + self.pageIdPrefix));
+    if (cur.length) { 
+        self.current = cur.addClass('current');
+    } else {
+        window.location.hash = '#1';
+    }
+}
+
+PPT.prototype.outline = function() {
+    var self = this;
+    self.mode = 'outline';
+    self.container.removeClass('ppt-play');
+};
+
+PPT.prototype.play = function() {
+    var self = this;
+    self.mode = 'play';
+    self.container.addClass('ppt-play');
+    window.scrollTo(0, 0);
+};
+
+PPT.prototype.next = function() {
+    var self = this;
+    var next = self.current.next();
+    if (!next.length) return;
+    window.location.hash = '#' + next.attr('id').replace(self.pageIdPrefix, '');
+};
+
+PPT.prototype.prev = function() {
+    var self = this;
+    var prev = self.current.prev();
+    if (!prev.length) return; 
+    window.location.hash = '#' + prev.attr('id').replace(self.pageIdPrefix, '');
+};
+
+if (navigator.userAgent.toLowerCase().indexOf('webkit') === -1) {
+    alert('仅支持webkit内核浏览器...');
+} else {
+    $(function(){new PPT('#ppt');});
+}
+
+  </script>
+  <style>
+.ppt-con a {
+    text-decoration:none;
+    color:#00f;
+}
+
+.ppt-con .ppt {
+    position:relative;
+    float:left;
+    width:400px;
+    height:300px;
+    -webkit-box-shadow: 5px 5px 7px #999;
+    margin:20px;
+    padding:0px;
+    overflow:hidden;
+    background-color:#fff;
+}
+
+.ppt-con .current {
+    -webkit-box-shadow: 5px 5px 7px #333;
+}
+
+.ppt-con .pager {
+    position:absolute;
+    left:0px;
+    top:0px;
+    display:block;
+    font-size:200%;
+    color:#f00;
+    font-weight:bold;
+}
+
+.ppt-play .pager {
+    display:none;
+}
+
+.ppt-play .current>* {
+    margin-left:30px;
+    margin-right:30px;
+}
+
+.ppt-play .current {
+    position:absolute;
+    width:100%;
+    height:100%;
+    margin:0;
+    left:0;
+    right:0;
+    font-size:150%;
+    z-index:999;
+}
+
+.ppt-play .current ul {font-size:150%;}
+
+.ppt-con .title-only {text-align:center}
+.ppt-con .title-only h2 {text-indent:30%;color:#888}
+  </style>
+
+<body>
+<div class="ppt-con" id="ppt">
+
+<div class="ppt title-only">
+    <h1 style="margin-top:15%;">蛇年话Python</h1>
+    <h2>emptyhua@gmail.com</h2>
+</div>
+
+<div class="ppt title-content">
+    <h1>内容</h1>
+    <ul>
+        <li>语言生平</li>
+        <li>语法速记</li>
+        <li>常用库</li>
+    </ul>
+</div>
+
+<!--Python的起源-->
+<div class="ppt title-content">
+    <h1>起源</h1>
+    <p>
+Python的创始人为Guido van Rossum。1989年圣诞节期间，在阿姆斯特丹，Guido为了打发圣诞节的无趣，决心开发一个新的脚本解释程序，做为ABC 语言的一种继承。之所以选中Python（大蟒蛇的意思）作为程序的名字，是因为他是一个叫Monty Python的喜剧团体的爱好者。
+    </p>
+    <p>From:<a href="http://baike.baidu.com/view/21087.htm#refIndex_1_21087" target="_blank">百度百科</a></p>
+</div>
+
+<div class="ppt title-content">
+    <h1>印象</h1>
+    <p>简单易学，社区活跃，胜任大部分工作。</p>
+</div>
+
+<!--Python代码示例-->
+<div class="ppt title-content">
+    <h3>Python</h3>
+    <pre><code>
+import urllib, json
+
+json = urllib.urlopen('http://ip.taobao.com/service/getIpInfo.php').read()
+obj = json.loads(json)
+print obj
+    </code></pre>
+    <h3>Perl</h3>
+    <pre><code>
+use LWP::Simple; 
+use JSON qw( decode_json );
+use Data::Dumper;
+use strict;
+use warnings;
+
+my $json = get("http://ip.taobao.com/service/getIpInfo.php");
+my $obj = decode_json($json);
+print Dumper $obj;
+    </code></pre>
+</div>
+
+<!--Python的哲学-->
+<div class="ppt title-content">
+    <h1>Python的哲学</h1>
+    <pre><code class="python">
+>>> import this
+The Zen of Python, by Tim Peters
+
+Beautiful is better than ugly.
+Explicit is better than implicit.
+Simple is better than complex.
+Complex is better than complicated.
+Flat is better than nested.
+Sparse is better than dense.
+Readability counts.
+Special cases aren't special enough to break the rules.
+Although practicality beats purity.
+Errors should never pass silently.
+Unless explicitly silenced.
+In the face of ambiguity, refuse the temptation to guess.
+There should be one-- and preferably only one --obvious way to do it.
+Although that way may not be obvious at first unless you're Dutch.
+Now is better than never.
+Although never is often better than *right* now.
+If the implementation is hard to explain, it's a bad idea.
+If the implementation is easy to explain, it may be a good idea.
+Namespaces are one honking great idea -- let's do more of those!
+    </code></pre>
+</div>
+
+
+
+
+<div class="ppt title-content">
+    <h1>
+        简单，明确，不在语法上耍酷
+    </h1>
+    <h2>python:</h2>
+    <pre><code>
+    for line in file('/tmp/xx', 'r'):
+        print line
+    </code></pre>
+    <h2>perl:</h2>
+    <p>虽然我看过一本Perl入门，但是看到下面代码还是不禁暗骂:你妹！！</p>
+    <pre><code>
+    open(FILE, "<", "/tmp/xx");
+    while(&lt;FILE&gt;) {
+        print;
+    }
+    close FILE;
+    </code></pre>
+</div>
+
+
+<div class="ppt title-content">
+    <h1>严谨</h1>
+<p>Python是一门强类型的语言,更容易发现错误</p>
+<pre><code class="bash">
+$ python -c 'print "abc" + 123'
+Traceback (most recent call last):
+  File "&lt;string&gt;", line 1, in &lt;module&gt;
+  TypeError: cannot concatenate 'str' and 'int' objects
+$ python -c 'print "show%s" % undefined'
+Traceback (most recent call last):
+  File "&lt;string&gt;", line 1, in &lt;module&gt;
+  NameError: name 'undefined' is not defined
+</code></pre>
+<pre><code class="bash">
+$ perl -e 'print "abc" . 123'
+abc123
+$ perl -e 'print "show${undefined}"'
+show
+</code></pre>
+</div>
+
+<!--扩展对比-->
+<div class="ppt title-content">
+    <h1>扩展丰富</h1>
+    <h2>debian 6.03</h2>
+    <pre><code>
+$ aptitude search python|wc -l
+2336
+emptyhua:~
+$ aptitude search perl|wc -l
+2315
+emptyhua:~
+$ aptitude search ruby|wc -l
+771
+emptyhua:~
+$ aptitude search php|wc -l
+234
+    </code></pre>
+</div>
+
+<!--通用语言-->
+<div class="ppt title-content">
+    <h1>通用语言</h1>
+    <ul>
+        <li>Web:django,<a href="http://webpy.org/" target="_blank">web.py</a>,zope</li>
+        <li>网络:twisted,<a href="http://www.tornadoweb.org/" target="_blank">Tornado</a></li>
+        <li>系统管理和编程辅助:<a href="http://www.scons.org/" target="_blank">scons</a>,pyexpect<br />Python可以胜任bash,awk,sed,expect,gnumake的工作,前面每种的语法都很独特,但是如果替换成Python,就免去好多烦恼
+        </li>
+        <li>GUI:<a href="http://www.riverbankcomputing.com/software/pyqt/intro" target="_blank">PyQt</a>,PyGtk,wxPython</li>
+        <li>科学计算:NumPy, SciPy, Matplotlib, Enthought librarys</li>
+    </ul>
+</div>
+
+
+<!--关于缩进问题-->
+<div class="ppt title-content">
+    <h1>
+        强制缩进让小白也能写出格式规范的代码
+    </h1>
+    <pre><code>
+def longfunc():
+    while True:
+        for i in xrange(1, 100):
+            for j in xrange(1, 100):
+                dosth()
+                for k in xrange(1, 100):
+                    if f1(i, j):
+                        f2()
+    #不用IDE也不用担心代码写的太长
+    #因为写的太长你根本找不到下一行从哪里开始-_!
+    </code></pre>
+</div>
+
+<!--使用python的项目-->
+<div class="ppt title-content">
+    <h1>使用python的项目</h1>
+    <ul>
+        <li>Youtube</li>
+        <li>Dropbox</li>
+        <li>Openstack</li>
+        <li>Raspberry Pi</li>
+        <li>豆瓣</li>
+    </ul>
+</div>
+
+
+<!--Python解释器-->
+<div class="ppt title-content">
+    <h1>Python解释器</h1>
+    <ul>
+        <li><a href="http://www.python.org" target="_blank">CPython</a> -- 原厂出品</li>
+        <li><a href="http://www.jython.org" target="_blank">Jython(JPython)</a> -- Java版本</li>
+        <li><a href="http://ironpython.codeplex.com" target="_blank">IronPython</a> -- C#版本</li>
+        <li><a href="http://pypy.org" target="_blank">PyPy</a> -- rPython版本(<a href="http://zh.wikipedia.org/wiki/JIT" target="_blank">JIT</a>,协作式微线程,Sandbox支持)</li>
+        <li><a href="http://www.stackless.com/" target="_blank">Stackless Python</a> -- <a href="http://gashero.yeax.com/?p=30" target="_blank">协作式微线程支持</a>,用于网游<a href="http://eve.tiancity.com/homepage/v2/" target="_blank">EVE Online</a></li>
+        <li><a href="http://www.infoq.com/cn/news/2011/04/unladen-swallow" target="_blank">Unladen Swallow</a> -- LLVM优化版本</li>
+        <li><a href="http://baike.baidu.com/view/2418947.htm" target="_blank">Pys60</a> -- Symbian移植版本</li>
+    </ul>
+</div>
+
+
+
+<!--Python版本-->
+<div class="ppt title-content">
+    <h1>Python版本</h1>
+    <ul>
+        <li>2.4 (redhat5自带)</li>
+        <li>2.6 (reahat6自带)</li>
+        <li>2.7 当前(2013-02)的主流版本</li>
+        <li>3000 (3.3) 不兼容老版本</li>
+    </ul>
+    <p><em style="color:red;">*</em>生产环境下建议尽量兼容老版本</p>
+</div>
+
+<!--数据类型-->
+<div class="ppt title-content">
+    <h1>常用数据类型</h1>
+    <ul>
+        <li>int,float</li>
+        <li>True,False</li>
+        <li>序列型数据:
+        <ul>
+            <li>str(字符串)</li>
+            <li>list(列表)</li>
+            <li>tuple(元组)</li>
+        </ul>
+        </li>
+        <li>dict(字典)</li>
+        <li>set(集合)</li>
+    </ul>
+</div>
+
+
+<!--字符串-->
+<div class="ppt title-content">
+    <pre><code class="python">
+>>> a = 'i am a string’
+>>> a[0]
+'i'
+>>> a[:-6]
+'i am a ’
+>>> 'a' * 5
+'aaaaa’
+>>> a[:-6] + 'long string'
+'i am a long string’
+>>> print 'new line \n second line'
+new line 
+ second line
+>>> print r'new line \n second line'
+new line \n second line
+>>> 'a' in 'abc’
+True
+>>> 'd' in 'abc'
+False
+    </code></pre>
+</div>
+
+
+
+
+
+</div>
+</body>
+</html>
