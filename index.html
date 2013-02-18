@@ -26,7 +26,7 @@ function PPT(container) {
         $(this).attr('id', self.pageIdPrefix + (i + 1))
         .append('<div class="pager">' + (i + 1) + '</div>');
     });
-    $(document).keyup(function(e){
+    $(document).keydown(function(e){
         e.stopPropagation();
         e.preventDefault();
         if (e.keyCode == 39 || e.keyCode == 32) {
@@ -141,11 +141,11 @@ if (navigator.userAgent.toLowerCase().indexOf('webkit') === -1) {
     margin:0;
     left:0;
     right:0;
-    font-size:150%;
+    font-size:24px;
     z-index:999;
 }
 
-.ppt-play .current ul {font-size:150%;}
+.ppt-play .current ul {font-size:36px;}
 
 .ppt-con .title-only {text-align:center}
 .ppt-con .title-only h2 {text-indent:30%;color:#888}
@@ -157,15 +157,7 @@ if (navigator.userAgent.toLowerCase().indexOf('webkit') === -1) {
 <div class="ppt title-only">
     <h1 style="margin-top:15%;">蛇年话Python</h1>
     <h2>emptyhua@gmail.com</h2>
-</div>
-
-<div class="ppt title-content">
-    <h1>内容</h1>
-    <ul>
-        <li>语言生平</li>
-        <li>语法速记</li>
-        <li>常用库</li>
-    </ul>
+    <div style="position:absolute;bottom:0;padding-bottom:20px;right:0;text-align:right;color:#888;">-&gt;/space:下一页<br/>&lt;-:上一页<br/>m:大纲视图<br/></div>
 </div>
 
 <!--Python的起源-->
@@ -210,7 +202,7 @@ print Dumper $obj;
 <div class="ppt title-content">
     <h1>Python的哲学</h1>
     <pre><code class="python">
->>> import this
+&gt;&gt;&gt; import this
 The Zen of Python, by Tim Peters
 
 Beautiful is better than ugly.
@@ -248,9 +240,8 @@ Namespaces are one honking great idea -- let's do more of those!
         print line
     </code></pre>
     <h2>perl:</h2>
-    <p>虽然我看过一本Perl入门，但是看到下面代码还是不禁暗骂:你妹！！</p>
     <pre><code>
-    open(FILE, "<", "/tmp/xx");
+    open(FILE, "&lt;", "/tmp/xx");
     while(&lt;FILE&gt;) {
         print;
     }
@@ -307,7 +298,7 @@ $ aptitude search php|wc -l
         <li>网络:twisted,<a href="http://www.tornadoweb.org/" target="_blank">Tornado</a></li>
         <li>系统管理和编程辅助:<a href="http://www.scons.org/" target="_blank">scons</a>,pyexpect<br />Python可以胜任bash,awk,sed,expect,gnumake的工作,前面每种的语法都很独特,但是如果替换成Python,就免去好多烦恼
         </li>
-        <li>GUI:<a href="http://www.riverbankcomputing.com/software/pyqt/intro" target="_blank">PyQt</a>,PyGtk,wxPython</li>
+        <li>GUI:<a href="http://www.riverbankcomputing.com/software/pyqt/intro" target="_blank">PyQt</a>,PyGtk,wxPython,Tkinter</li>
         <li>科学计算:NumPy, SciPy, Matplotlib, Enthought librarys</li>
     </ul>
 </div>
@@ -367,11 +358,39 @@ def longfunc():
     <ul>
         <li>2.4 (redhat5自带)</li>
         <li>2.6 (reahat6自带)</li>
-        <li>2.7 当前(2013-02)的主流版本</li>
+        <li>2.7</li>
         <li>3000 (3.3) 不兼容老版本</li>
     </ul>
     <p><em style="color:red;">*</em>生产环境下建议尽量兼容老版本</p>
 </div>
+
+<div class="ppt title-only">
+    <h1 style="margin-top:15%;">Python语法</h1>
+</div>
+
+<div class="ppt title-content">
+    <h1>使用注释和文档</h1>
+    <p>对于字符串型的注释 如果注释出现在文件开头，那么它将成为一个模块文档
+    如果出现在函数定义之后，成为一个函数文档
+    如果出现在class定义之后，成为一个类的说明文档
+    文档在运行时是可以访问的</p>
+    <pre><code class="python">
+&gt;&gt;&gt; def foo():
+...     '''
+... i am foo
+... void foo(void);
+...     '''
+...     pass
+... 
+&gt;&gt;&gt;print foo.__doc__
+i am foo
+void foo(void);
+&gt;&gt;&gt;help(foo)
+&gt;&gt;&gt;import os
+&gt;&gt;&gt;help(os)
+    </code></pre>
+</div>
+
 
 <!--数据类型-->
 <div class="ppt title-content">
@@ -394,30 +413,222 @@ def longfunc():
 
 <!--字符串-->
 <div class="ppt title-content">
+    <h1>字符串</h1>
     <pre><code class="python">
->>> a = 'i am a string’
->>> a[0]
+&gt;&gt;&gt; a = 'i am a string’
+&gt;&gt;&gt; a[0]
 'i'
->>> a[:-6]
+&gt;&gt;&gt; a[:-6]
 'i am a ’
->>> 'a' * 5
+&gt;&gt;&gt; 'a' * 5
 'aaaaa’
->>> a[:-6] + 'long string'
+&gt;&gt;&gt; a[:-6] + 'long string'
 'i am a long string’
->>> print 'new line \n second line'
+&gt;&gt;&gt; print 'new line \n second line'
 new line 
  second line
->>> print r'new line \n second line'
+&gt;&gt;&gt; print r'new line \n second line'
 new line \n second line
->>> 'a' in 'abc’
+&gt;&gt;&gt; 'a' in 'abc’
 True
->>> 'd' in 'abc'
+&gt;&gt;&gt; 'd' in 'abc'
 False
     </code></pre>
 </div>
 
+<!--列表-->
+<div class="ppt title-content">
+    <h1>列表</h1>
+    <pre><code class="python">
+&gt;&gt;&gt; a = [1,2,3,4]
+&gt;&gt;&gt; a
+[1, 2, 3, 4]
+&gt;&gt;&gt; b = range(5,8)
+&gt;&gt;&gt; b
+[5, 6, 7]
+&gt;&gt;&gt; c = a + b
+&gt;&gt;&gt; c
+[1, 2, 3, 4, 5, 6, 7]
+&gt;&gt;&gt; c.append(8)
+&gt;&gt;&gt; c
+[1, 2, 3, 4, 5, 6, 7, 8]
+&gt;&gt;&gt; c.remove(2)
+&gt;&gt;&gt; c
+[1, 3, 4, 5, 6, 7, 8]
+    </code></pre>
+</div>
+
+<div class="ppt title-content">
+    <h1>列表</h1>
+    <pre><code class="python">
+a = ['a','b','c','d']
+
+for v in a:
+    print v
+
+for i, v in enumerate(a):
+    print i, v
+
+b = [i + '-' for i in a]
+b = [i + '-' for i in a if i != 'c']
+</code></pre>
+</div>
+
+<div class="ppt title-content">
+    <h1>元组</h1>
+    <pre><code class="python">
+&gt;&gt;&gt; a = (1,)
+&gt;&gt;&gt; a
+(1,)
+&gt;&gt;&gt; b = (2,3)
+&gt;&gt;&gt; b
+(2, 3)
+&gt;&gt;&gt; c = a + b
+&gt;&gt;&gt; c
+(1, 2, 3)
+&gt;&gt;&gt; c.remove(2)
+Traceback (most recent call last):
+  File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+  AttributeError: 'tuple' object has no attribute 'remove'
+</code></pre>
+</div>
+
+<div class="ppt title-content">
+    <h1>字典</h1>
+    <pre><code class="python">
+&gt;&gt;&gt; a = {'name':'han meimei'}
+&gt;&gt;&gt; a['age'] = 14
+&gt;&gt;&gt; a
+{'age': 14, 'name': 'han meimei'}
+&gt;&gt;&gt; del a['age']
+&gt;&gt;&gt; a
+{'name': 'han meimei'}
+&gt;&gt;&gt; b = (1,2,3)
+&gt;&gt;&gt; a[b] = 'hello'
+</code></pre>
+</div>
+
+<div class="ppt title-content">
+    <h1>if</h1>
+    <pre><code class="python">
+if a < 250 or a > 250:
+    print 'good man'
+elif False:
+    print 'i am lonely'
+else:
+    print 'bad man'
+</code></pre>
+<p>python里木有switch</p>
+</div>
+
+<div class="ppt title-content">
+    <h1>loop</h1>
+    <pre><code class="python">
+for x in xrange(50, 100):
+    print x
+
+for v in [1,2,3,4,5,6]:
+    print v
+
+while x < 10:
+    print x
+    x += 1
+</code></pre>
+<p>python木有for(;;)</p>
+</div>
+
+<div class="ppt title-content">
+    <h1>异常处理</h1>
+    <pre><code class="python">
+import traceback
+try:
+    print a
+except NameError, e:
+    print traceback.format_exc()
+    raise NameError, 'hoho'
+except Exception, e:
+    print 'catch all’
+</code></pre>
+</div>
+
+<div class="ppt title-content">
+    <h1>函数定义</h1>
+    <pre><code class="python">
+def foo(x,y):
+    return x * y
+    print foo(3, 5)
+#变参
+def foo(*m):
+    return ','.join(m)
+    print foo('1','2','3','4')
+
+def foo(**m):
+    return ','.join(m.keys())
+    print foo(name='oo',age='xx')
+
+#匿名函数
+(lambda i: 'good %s' % i)('man')
+</code></pre>
+</div>
+
+<div class="ppt title-only">
+    <h1 style="margin-top:15%;">常用操作和库</h1>
+</div>
 
 
+<div class="ppt title-content">
+    <h1>系统编程</h1>
+<pre><code class="python">
+import sys
+#获取标准输入
+for line in sys.stdin:
+    print line
+#标准输出
+print "message”
+#标准错误输出
+print &gt;&gt; sys.stderr， ”Error”
+
+#处理参数
+print ','.join(sys.argv)
+#修改标准输出
+sys.stdout = open('./screenlog’,’a’)
+</code></pre>
+</div>
+
+<div class="ppt title-content">
+    <h1>系统编程</h1>
+<pre><code class="python">
+import urllib
+import os
+
+#请求url
+wget = urllib.urlopen
+content = wget('http://g.cn').read()
+print content
+
+#调用外部程序
+os.system('ls')
+print os.popen('ls').read()
+</code></pre>
+</div>
+
+<div class="ppt title-content">
+    <h1>使用正则</h1>
+<pre><code class="python">
+import re
+
+TAGREG = re.compile(r'&lt;[^&gt;]*&gt;')
+
+test = '''
+&lt;html&gt;i am a html doc&lt;/html&gt;
+'''
+print re.sub(TAGREG, '', test)
+print TAGREG.sub('', test)
+
+print re.findall(TAGREG, test)
+print TAGREG.findall(test)
+</code></pre>
+</div>
 
 
 </div>
