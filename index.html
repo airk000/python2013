@@ -391,6 +391,116 @@ void foo(void);
     </code></pre>
 </div>
 
+<div class="ppt title-content">
+    <h1>import</h1>
+    <pre><code class="python">
+import sys
+import re,urllib
+#引用个别模块
+from os import path
+#别名
+import simplejson as json
+    </code></pre>
+    <p>详细了解<a href="http://docs.python.org/2/tutorial/modules.html" target="_blank">
+        http://docs.python.org/2/tutorial/modules.html
+    </a>
+    </p>
+</div>
+
+<div class="ppt title-content">
+    <h1>if</h1>
+    <pre><code class="python">
+if a < 250 or a > 250:
+    print 'good man'
+elif False:
+    print 'i am lonely'
+else:
+    print 'bad man'
+</code></pre>
+<p>python里木有switch</p>
+</div>
+
+<div class="ppt title-content">
+    <h1>loop</h1>
+    <pre><code class="python">
+for x in xrange(50, 100):
+    print x
+
+for v in [1,2,3,4,5,6]:
+    print v
+
+while x < 10:
+    print x
+    x += 1
+</code></pre>
+<p>python木有for(;;)</p>
+</div>
+
+<div class="ppt title-content">
+    <h1>yield</h1>
+    <pre><code class="python">
+def fib(max):  
+    a, b = 0, 1            
+    while a &gt; max:  
+        yield a            
+        a, b = b, a + b   
+
+for n in fib(1000):
+    print n
+    </code></pre>
+<p>
+详细了解:<a href="http://blog.donews.com/limodou/archive/2006/09/04/1028747.aspx" target="_blank">
+    2.5版yield之学习心得
+</a></p>
+<p>
+与coroutine的不同:
+<a href="http://stackoverflow.com/questions/11830540/is-yield-based-coroutine-is-real-coroutine" target="_blank">
+    Is yield-based coroutine is REAL coroutine?
+</a>
+</p>
+</div>
+
+
+
+
+<div class="ppt title-content">
+    <h1>异常处理</h1>
+    <pre><code class="python">
+import traceback
+try:
+    print a
+except NameError, e:
+    print traceback.format_exc()
+    raise NameError, 'hoho'
+except Exception, e:
+    print 'catch all'
+</code></pre>
+<p>详细了解:<a href="http://docs.python.org/2/tutorial/errors.html" target="_blank">
+    http://docs.python.org/2/tutorial/errors.html
+</a>
+</p>
+</div>
+
+<div class="ppt title-content">
+    <h1>函数定义</h1>
+    <pre><code class="python">
+def foo(x,y):
+    return x * y
+print foo(3, 5)
+#变参
+def foo(*m):
+    return ','.join(m)
+print foo('1','2','3','4')
+
+def foo(**m):
+    return ','.join(m.keys())
+print foo(name='oo',age='xx')
+
+#匿名函数
+(lambda i: 'good %s' % i)('man')
+</code></pre>
+    <p>详细了解:<a href="http://docs.python.org/2/tutorial/controlflow.html#defining-functions" target="_blank">http://docs.python.org/2/tutorial/controlflow.html#defining-functions</a></p>
+</div>
 
 <!--数据类型-->
 <div class="ppt title-content">
@@ -408,33 +518,110 @@ void foo(void);
         <li>dict(字典)</li>
         <li>set(集合)</li>
     </ul>
+    <p><b style="color:red;">*</b>python中所有数据类型都是对象,包括函数</p>
 </div>
 
+<!--数字-->
+<div class="ppt title-content">
+    <h1>数字</h1>
+    <pre><code class="python">
+#字符串转数字,第二个参数指定进制
+int('100', 10)
+int('100', 2)
+float('10.01')
+#数字转字符串
+str(100)
+'%d' % 100
+    </code></pre>
+</div>
 
 <!--字符串-->
 <div class="ppt title-content">
     <h1>字符串</h1>
     <pre><code class="python">
-&gt;&gt;&gt; a = 'i am a string’
+&gt;&gt;&gt; a = 'i am a string'
 &gt;&gt;&gt; a[0]
 'i'
 &gt;&gt;&gt; a[:-6]
-'i am a ’
+'i am a'
 &gt;&gt;&gt; 'a' * 5
-'aaaaa’
+'aaaaa'
 &gt;&gt;&gt; a[:-6] + 'long string'
-'i am a long string’
+'i am a long string'
 &gt;&gt;&gt; print 'new line \n second line'
 new line 
  second line
 &gt;&gt;&gt; print r'new line \n second line'
 new line \n second line
-&gt;&gt;&gt; 'a' in 'abc’
+&gt;&gt;&gt; 'a' in 'abc'
 True
 &gt;&gt;&gt; 'd' in 'abc'
 False
     </code></pre>
+
 </div>
+
+<div class="ppt title-only">
+    <h1 style="margin-top:15%">序列类型:字符串,列表,元组均支持[] [:] + * in操作符 len()取长度</h1>
+</div>
+
+<div class="ppt title-content">
+    <h1>Heredoc</h1>
+    <pre><code class="python">
+print '''
+多行文本
+多行文本
+'''
+print  """
+多行文本
+多行文本
+"""
+    </code></pre>
+    <pre><code class="perl">
+print &lt;&lt;"END";
+多行文本
+多行文本
+END
+    </code></pre>
+</div>
+
+<!--字符串编码-->
+<div class="ppt title-content">
+    <h1>字符串编码对新手来说是个坑</h1>
+    <p>
+SyntaxError: Non-ASCII character '\xe6' in file /tmp/test.py on line 4, but no encoding declared; see http://www.python.org/peps/pep-0263.html for details
+    </p>
+</div>
+
+<div class="ppt title-content">
+    <h1>在Python中使用中文</h1>
+    <pre><code class="python">
+#!/usr/bin/env python
+#coding: utf-8
+'''
+用中文费点事
+'''
+    </code></pre>
+</div>
+
+<div class="ppt title-content">
+    <h1>str和unicode</h1>
+    <pre><code class="python">
+#!/usr/bin/env python
+#coding: utf-8
+s1 = '''
+我是普通字符串
+'''
+s2 = u'''
+我是unicode字符串
+'''
+    </code></pre>
+    <p><b style="color:red;">*</b>普通字符串的编码和文件编码一致，unicode字符串和文件编码无关</p>
+    <p>了解更多:<a href="http://docs.python.org/2/howto/unicode.html" target="_blank">
+        http://docs.python.org/2/howto/unicode.html
+    </a></p>
+</div>
+
 
 <!--列表-->
 <div class="ppt title-content">
@@ -472,6 +659,7 @@ for i, v in enumerate(a):
 b = [i + '-' for i in a]
 b = [i + '-' for i in a if i != 'c']
 </code></pre>
+<p>通过生成器表达式可以方便的通过map和filter生成新列表</p>
 </div>
 
 <div class="ppt title-content">
@@ -501,74 +689,16 @@ Traceback (most recent call last):
 &gt;&gt;&gt; a
 {'age': 14, 'name': 'han meimei'}
 &gt;&gt;&gt; del a['age']
-&gt;&gt;&gt; a
-{'name': 'han meimei'}
 &gt;&gt;&gt; b = (1,2,3)
 &gt;&gt;&gt; a[b] = 'hello'
+&gt;&gt;&gt; a['none']
+Traceback (most recent call last):
+  File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+  KeyError: 'none'
+&gt;&gt;&gt; a.get('none')
 </code></pre>
-</div>
-
-<div class="ppt title-content">
-    <h1>if</h1>
-    <pre><code class="python">
-if a < 250 or a > 250:
-    print 'good man'
-elif False:
-    print 'i am lonely'
-else:
-    print 'bad man'
-</code></pre>
-<p>python里木有switch</p>
-</div>
-
-<div class="ppt title-content">
-    <h1>loop</h1>
-    <pre><code class="python">
-for x in xrange(50, 100):
-    print x
-
-for v in [1,2,3,4,5,6]:
-    print v
-
-while x < 10:
-    print x
-    x += 1
-</code></pre>
-<p>python木有for(;;)</p>
-</div>
-
-<div class="ppt title-content">
-    <h1>异常处理</h1>
-    <pre><code class="python">
-import traceback
-try:
-    print a
-except NameError, e:
-    print traceback.format_exc()
-    raise NameError, 'hoho'
-except Exception, e:
-    print 'catch all’
-</code></pre>
-</div>
-
-<div class="ppt title-content">
-    <h1>函数定义</h1>
-    <pre><code class="python">
-def foo(x,y):
-    return x * y
-    print foo(3, 5)
-#变参
-def foo(*m):
-    return ','.join(m)
-    print foo('1','2','3','4')
-
-def foo(**m):
-    return ','.join(m.keys())
-    print foo(name='oo',age='xx')
-
-#匿名函数
-(lambda i: 'good %s' % i)('man')
-</code></pre>
+    <p><b style="color:red;">*</b>只要是固定的数据类型都可以做key</p>
+    <p><b style="color:red;">*</b>通过[]访问不存在的key会抛异常,get方法不会</p>
 </div>
 
 <div class="ppt title-only">
@@ -584,14 +714,15 @@ import sys
 for line in sys.stdin:
     print line
 #标准输出
-print "message”
+print "message"
+print "不带换行",
 #标准错误输出
-print &gt;&gt; sys.stderr， ”Error”
+print &gt;&gt; sys.stderr, "Error"
 
 #处理参数
 print ','.join(sys.argv)
 #修改标准输出
-sys.stdout = open('./screenlog’,’a’)
+sys.stdout = open('./screenlog', 'a')
 </code></pre>
 </div>
 
@@ -617,6 +748,7 @@ print os.popen('ls').read()
 <pre><code class="python">
 import re
 
+#预编译可以提高运行效率
 TAGREG = re.compile(r'&lt;[^&gt;]*&gt;')
 
 test = '''
@@ -629,6 +761,16 @@ print re.findall(TAGREG, test)
 print TAGREG.findall(test)
 </code></pre>
 </div>
+
+<div class="ppt title-content">
+    <h1>学习资源</h1>
+    <ul>
+        <li><a href="http://book.douban.com/subject/3112503/" target="_blank">《Python核心编程》</a>
+        <span style="color:888;">很全面,个人觉得不错</span></li>
+        <li><a href="http://docs.python.org/" target="_blank">http://docs.python.org</a></li>
+    </ul>
+</div>
+
 
 
 </div>
