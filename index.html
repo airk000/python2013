@@ -469,10 +469,10 @@ for n in fib(1000):
 import traceback
 try:
     print a
-except NameError, e:
+except NameError as e:
     print traceback.format_exc()
-    raise NameError, 'hoho'
-except Exception, e:
+    raise NameError('hoho')
+except Exception as e:
     print 'catch all'
 </code></pre>
 <p>详细了解:<a href="http://docs.python.org/2/tutorial/errors.html" target="_blank">
@@ -500,6 +500,56 @@ print foo(name='oo',age='xx')
 (lambda i: 'good %s' % i)('man')
 </code></pre>
     <p>详细了解:<a href="http://docs.python.org/2/tutorial/controlflow.html#defining-functions" target="_blank">http://docs.python.org/2/tutorial/controlflow.html#defining-functions</a></p>
+</div>
+
+<!--修饰器-->
+<div class="ppt title-content">
+    <h1>Decorator,语法级的AOP支持</h1>
+    <pre><code>
+def no_error(orign_func):
+    def catch_all(*args, **kargs):
+        try:
+            return orgin_func(*args, **kargs)
+        except:
+            print 'catch error'
+    return catch_all
+
+@no_error
+def foo1():
+    print abc
+#foo1 = no_error(foo1)
+
+def foo2():
+    print abc
+
+foo1()
+foo2()
+    </code></pre>
+</div>
+
+<!--对象-->
+<div class="ppt title-content">
+    <h1>对象</h1>
+    <pre><code>
+import random
+class Human():
+    def __add__(a, b): #运算符重载
+        if a.__class__ == b.__class__:
+            return None
+        else:
+            return globals()[random.choice('Man', 'Woman')]()
+class Man(Human):
+    pass
+class Woman(Human):
+    pass
+class ChunGe(Man, Woman): #多重继承
+    pass
+
+m = Man()
+w = Woman()
+print m + w
+    </code></pre>
+    <p>详细了解:<a href="http://docs.python.org/2/tutorial/classes.html" target="_blank">http://docs.python.org/2/tutorial/classes.html</a></p>
 </div>
 
 <!--数据类型-->
